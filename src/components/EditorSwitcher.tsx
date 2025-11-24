@@ -20,13 +20,13 @@ export default function EditorSwitcher<T extends string>({
           key={o}
           onClick={() => onChange(o)}
           className={clsx(
-            "px-3 py-1 rounded-md border",
+            "px-3 py-1 rounded-md border capitalize",
             value === o
               ? "bg-white border-gray-300 shadow-sm font-semibold"
               : "bg-transparent border-transparent text-gray-600 hover:bg-white hover:border-gray-200"
           )}
         >
-          {o}
+          {o.charAt(0).toUpperCase() + o.slice(1)}
         </button>
       ))}
     </div>
