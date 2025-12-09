@@ -6,12 +6,42 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import { $isHorizontalRuleNode, HorizontalRuleNode } from "@lexical/react/LexicalHorizontalRuleNode";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
+
+import {
+  HeadingNode,
+  QuoteNode,
+} from "@lexical/rich-text";
+import {
+  ListNode,
+  ListItemNode,
+} from "@lexical/list";
+import {
+  LinkNode,
+  AutoLinkNode,
+} from "@lexical/link";
+import { CodeNode } from "@lexical/code";
+
+import lexicalTheme from "@/lib/lexicaltheme";
+import ToolbarPlugin from "./plugins/ToolbarPlugin";
 
 const initialConfig = {
-  namespace: "LexicalEditor",
-  nodes: [],
+  namespace: "EnhancedLexicalEditor",
+  theme: lexicalTheme,
+  nodes: [
+    HeadingNode,
+    QuoteNode,
+    ListNode,
+    ListItemNode,
+    LinkNode,
+    AutoLinkNode,
+    CodeNode,
+    HorizontalRuleNode,
+  ],
   onError(error: Error) {
-    // use your error handler in production
     console.error(error);
   },
 };
@@ -20,21 +50,28 @@ export default function LexicalEditor() {
   return (
     <div className="editor-wrapper">
       <LexicalComposer initialConfig={initialConfig}>
-        <div className="mb-3 text-sm text-gray-600">Lexical (basic)</div>
+        <div className="mb-2 text-sm font-semibold text-gray-700">
+          Lexical Editor (Enhanced)
+        </div>
 
-        <div className="border rounded p-2 min-h-40">
+        <ToolbarPlugin />
+
+        <div className="border rounded p-3 min-h-[150px]">
           <RichTextPlugin
             contentEditable={
-              <ContentEditable className="editor-content min-h-[120px] outline-none" />
+              <ContentEditable className="outline-none min-h-[120px]" />
             }
-            placeholder={<div className="text-gray-400">Type here...</div>}
-            ErrorBoundary={({ children }: { children?: React.ReactNode }) => <>{children}</>}
+            placeholder={<span className="text-gray-400">Type something...</span>}
+            ErrorBoundary={({ children }) => <>{children}</>}
           />
           <HistoryPlugin />
-          <OnChangePlugin onChange={() => {
-            // serialize / debug here if needed
-            // e.g. editorState.read(() => { ... })
-          }} />
+          <ListPlugin />
+          <LinkPlugin />
+          <MarkdownShortcutPlugin />
+          <OnChangePlugin
+            onChange={() => {
+            }}
+          />
         </div>
       </LexicalComposer>
     </div>
