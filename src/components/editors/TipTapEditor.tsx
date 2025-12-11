@@ -32,7 +32,7 @@ export default function TiptapEditor() {
   });
 
   const toggle = useCallback(
-    (cmd: any) => editor?.chain().focus()[cmd]().run(),
+    (cmd: "toggleBold" | "toggleItalic" | "toggleUnderline" | "toggleBulletList" | "toggleOrderedList") => editor?.chain().focus()[cmd]().run(),
     [editor]
   );
 
